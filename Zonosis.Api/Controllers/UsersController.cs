@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zonosis.Api.Data;
 using Zonosis.Api.Helpers;
+using Zonosis.Shared.DTOs;
 using Zonosis.Shared.Entities;
 using Zonosis.Shared.Enumerations;
 
@@ -122,6 +123,46 @@ namespace Zonosis.Api.Controllers
             }
             await _context.SaveChangesAsync();
             return Ok(userFavorite);
+        }
+
+        //  api/user/view-pet-details/1
+        [HttpGet("view-pet-details/{petId:int}")]
+        public async Task<IActionResult> GetPetDetailsAsync(int petId)
+        {
+            var user = await _userHelper.GetUserAsync(User.Identity!.Name!);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var petDetails = await _context.Pets
+                .AsTracking()
+                .FirstOrDefaultAsync(p => p.Id == petId);
+
+            if (petDetails is not null)
+            {
+                petDetails.Views++;
+                _context.SaveChanges();
+            }
+
+            var petDto = new PetDetailDTO
+            {
+                AdoptionStatus = petDetails!.AdoptionStatus,
+                Raza = petDetails.Raza,
+                DateNacido = petDetails.DateNacido,
+                Description = petDetails.Description,
+                Genero = petDetails.Genero,
+                Id = petDetails.Id,
+                Image = petDetails.Image,
+                Name = petDetails.Name,
+                Price = petDetails.Price
+            };
+
+            if (await _context.UserFavoritess.AnyAsync(uf => uf.UserId == user.Id && uf.PetId == petId))
+            {
+                petDto.IsFavorite = true;
+            }
+
+            return Ok(petDto);
         }
     }
 }
