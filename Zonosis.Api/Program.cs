@@ -117,5 +117,5 @@ app.UseCors(x => x
     .AllowCredentials());
 
 //var uriBack = "https://localhost:7084";
-//app.Run();
-app.Run("https://localhost:7084");
+app.Run();
+//app.Run("https://localhost:7084");

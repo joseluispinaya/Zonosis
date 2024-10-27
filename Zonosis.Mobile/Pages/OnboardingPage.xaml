@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Zonosis.Mobile.Pages.OnboardingPage">
+    
+    <Grid RowDefinitions="*, *">
+        <Border
+            Grid.Row="0"
+            HeightRequest="300"
+            HorizontalOptions="Center"
+            Stroke="{StaticResource Primary}"
+            StrokeShape="RoundRectangle 150"
+            StrokeThickness="10"
+            VerticalOptions="Center"
+            WidthRequest="300"
+            IsVisible="{OnPlatform False, Android=True}">
+            <Image
+                Aspect="AspectFill"
+                HeightRequest="300"
+                HorizontalOptions="Center"
+                Source="img_22.jpg"
+                VerticalOptions="Center"
+                WidthRequest="300" />
+            <Border.Shadow>
+                <Shadow Brush="{StaticResource Primary}" Radius="250" />
+            </Border.Shadow>
+        </Border>
+        <Frame Grid.Row="0"
+            HeightRequest="300"
+            BorderColor="{StaticResource Primary}"
+            CornerRadius="150"
+            WidthRequest="300"
+               IsClippedToBounds="True"
+               IsVisible="{OnPlatform False, iOS=True}">
+            <Image
+                Aspect="AspectFill"
+                HeightRequest="300"
+                HorizontalOptions="Center"
+                Source="img_22.jpg"
+                VerticalOptions="Center"
+                WidthRequest="300" />
+            <Frame.Shadow>
+                <Shadow Brush="{StaticResource Primary}" Radius="250" />
+            </Frame.Shadow>
+        </Frame>
+        <Grid
+            Grid.Row="1"
+            Padding="15"
+            RowDefinitions="*, Auto">
+            <VerticalStackLayout Grid.Row="0" Spacing="30">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="40"
+                    LineHeight="1.2"
+                    Text="Encuentra tu mascota amiga" />
+                <Label
+                    FontSize="18"
+                    HorizontalTextAlignment="Center"
+                    LineHeight="1.3"
+                    Text="Encuentra a tu mejor amigo en nuestro refugio. Tenemos una amplia gama de adorables y tiernas mascotas para ser adoptadas." />
+            </VerticalStackLayout>
+            <Button
+                Grid.Row="1"
+                Style="{StaticResource btnPrimary}"
+                Text="Explorar"
+                Clicked="Button_Clicked"/>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,6 +8,7 @@ using System.Text;
 using Zonosis.Api.Helpers;
 using Zonosis.Shared.DTOs;
 using Zonosis.Shared.Entities;
+using Zonosis.Shared.Responses;
 
 namespace Zonosis.Api.Controllers
 {
@@ -20,6 +23,28 @@ namespace Zonosis.Api.Controllers
         {
             _userHelper = userHelper;
             _configuration = configuration;
+        }
+
+        [HttpGet("Getuser")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> GetUserByEmail()
+        {
+            User user = await _userHelper.GetUserAsync(User.Identity!.Name!);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userRespo = new UserResponse
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                Id = user.Id,
+                PhoneNumber = user.PhoneNumber
+            };
+            return Ok(userRespo);
+
         }
 
         [HttpPost("CreateUser")]

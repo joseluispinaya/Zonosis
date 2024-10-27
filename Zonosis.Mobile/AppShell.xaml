@@ -3,13 +3,54 @@
     x:Class="Zonosis.Mobile.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:local="clr-namespace:Zonosis.Mobile"
+    xmlns:pages="clr-namespace:Zonosis.Mobile.Pages"
     Shell.FlyoutBehavior="Disabled"
     Title="Zonosis.Mobile">
 
+    <Shell.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="LightContent" />
+    </Shell.Behaviors>
+    
     <ShellContent
-        Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
+    <ShellContent
+        ContentTemplate="{DataTemplate pages:OnboardingPage}"
+        Route="OnboardingPage"
+        Shell.NavBarIsVisible="False"
+        Shell.TabBarIsVisible="False" />
+
+    <ShellContent
+        Title=""
+        ContentTemplate="{DataTemplate pages:LoginRegisterPage}"
+        Route="LoginRegisterPage"
+        Shell.NavBarIsVisible="False"
+        Shell.TabBarIsVisible="False" />
+
+    <TabBar>
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate pages:HomePage}"
+            Icon="home"
+            Route="HomePage" />
+        <ShellContent
+            Title="All Pets"
+            ContentTemplate="{DataTemplate pages:AllPetsPage}"
+            Icon="list"
+            Route="AllPetsPage" />
+        <ShellContent
+            Title="Favorites"
+            ContentTemplate="{DataTemplate pages:FavoritesPage}"
+            Icon="heart"
+            Route="FavoritesPage" />
+        <ShellContent
+            Title="Profile"
+            ContentTemplate="{DataTemplate pages:ProfilePage}"
+            Icon="user"
+            Route="ProfilePage" />
+    </TabBar>
+    
 </Shell>

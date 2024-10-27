@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Zonosis.Mobile.Pages.LoginRegisterPage"
+             xmlns:models="clr-namespace:Zonosis.Mobile.Models"
+             xmlns:vm="clr-namespace:Zonosis.Mobile.ViewModels"
+             Title=""
+             x:DataType="vm:LoginRegisterViewModel"
+             BackgroundColor="{StaticResource BgColor}">
+
+    <Grid RowDefinitions="2*, 3*">
+        <Border
+            Grid.Row="0"
+            HeightRequest="250"
+            IsVisible="{OnPlatform False,
+                                   Android=True}"
+            Stroke="{StaticResource Primary}"
+            StrokeShape="RoundRectangle 150"
+            StrokeThickness="10"
+            WidthRequest="250">
+            <Image
+                Aspect="AspectFill"
+                HeightRequest="250"
+                HorizontalOptions="Center"
+                Source="img_21.jpg"
+                VerticalOptions="Center"
+                WidthRequest="250" />
+            <Border.Shadow>
+                <Shadow Brush="{StaticResource Primary}" Radius="250" />
+            </Border.Shadow>
+        </Border>
+        <Frame
+            Grid.Row="0"
+            BorderColor="{StaticResource Primary}"
+            CornerRadius="125"
+            HasShadow="True"
+            HeightRequest="250"
+            IsClippedToBounds="True"
+            IsVisible="{OnPlatform False,
+                                   iOS=True}"
+            WidthRequest="250">
+            <Image
+                Aspect="AspectFill"
+                HeightRequest="250"
+                HorizontalOptions="Center"
+                Source="img_21.jpg"
+                VerticalOptions="Center"
+                WidthRequest="250" />
+        </Frame>
+
+        <ScrollView Grid.Row="1" Padding="15">
+            <VerticalStackLayout Spacing="30">
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        FontSize="40"
+                        LineHeight="1.2"
+                        Text="Login">
+                        <Label.Triggers>
+                            <DataTrigger
+                                Binding="{Binding IsRegistrationMode}"
+                                TargetType="Label"
+                                Value="True">
+                                <Setter Property="Text" Value="Register" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label
+                        Grid.Column="1"
+                        Padding="5"
+                        BackgroundColor="White"
+                        FontAttributes="Bold"
+                        HorizontalOptions="End"
+                        Text="Switch to Register"
+                        TextDecorations="Underline"
+                        VerticalOptions="Center">
+                        <Label.Triggers>
+                            <DataTrigger
+                                Binding="{Binding IsRegistrationMode}"
+                                TargetType="Label"
+                                Value="True">
+                                <Setter Property="Text" Value="Switch to Login" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleModeCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
+                <VerticalStackLayout Spacing="10">
+                    <Entry
+                        IsVisible="{Binding IsRegistrationMode}"
+                        Placeholder="Ingrese nombre"
+                        PlaceholderColor="{StaticResource Primary}"
+                        Text="{Binding Model.Name}" />
+
+                    <Entry
+                        IsVisible="{Binding IsRegistrationMode}"
+                        Keyboard="Telephone"
+                        Placeholder="Ingrese nro celular"
+                        PlaceholderColor="{StaticResource Primary}"
+                        Text="{Binding Model.Phone}" />
+
+                    <Entry
+                        Keyboard="Email"
+                        Placeholder="Ingrece Correo"
+                        PlaceholderColor="{StaticResource Primary}"
+                        Text="{Binding Model.Email}" />
+
+                    <Entry
+                        IsPassword="True"
+                        Placeholder="Ingrece contraseña"
+                        PlaceholderColor="{StaticResource Primary}"
+                        Text="{Binding Model.Password}" />
+
+                    <Button
+                        Command="{Binding SubmitCommand}"
+                        Style="{StaticResource btnPrimary}"
+                        Text="Login">
+                        <Button.Triggers>
+                            <DataTrigger
+                                Binding="{Binding IsRegistrationMode}"
+                                TargetType="Button"
+                                Value="True">
+                                <Setter Property="Text" Value="Register" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </VerticalStackLayout>
+
+                <Grid ColumnDefinitions="*, Auto, *" ColumnSpacing="5">
+                    <BoxView
+                        Grid.Column="0"
+                        HeightRequest="1"
+                        Color="{StaticResource Primary}" />
+
+                    <Button
+                        Grid.Column="1"
+                        Padding="25,5"
+                        Command="{Binding SkipForNowCommand}"
+                        HeightRequest="30"
+                        HorizontalOptions="Center"
+                        Text="Saltar por ahora" />
+
+                    <BoxView
+                        Grid.Column="2"
+                        HeightRequest="1"
+                        Color="{StaticResource Primary}" />
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator
+            HeightRequest="30"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            VerticalOptions="Center"
+            WidthRequest="30"
+            Color="{StaticResource Primary}" />
+    </Grid>
+</ContentPage>
