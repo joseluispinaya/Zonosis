@@ -32,22 +32,22 @@
 
     <TabBar>
         <ShellContent
-            Title="Home"
+            Title="Inicio"
             ContentTemplate="{DataTemplate pages:HomePage}"
             Icon="home"
             Route="HomePage" />
         <ShellContent
-            Title="All Pets"
+            Title="Ver Todo"
             ContentTemplate="{DataTemplate pages:AllPetsPage}"
             Icon="list"
             Route="AllPetsPage" />
         <ShellContent
-            Title="Favorites"
+            Title="Favoritos"
             ContentTemplate="{DataTemplate pages:FavoritesPage}"
             Icon="heart"
             Route="FavoritesPage" />
         <ShellContent
-            Title="Profile"
+            Title="Perfil"
             ContentTemplate="{DataTemplate pages:ProfilePage}"
             Icon="user"
             Route="ProfilePage" />

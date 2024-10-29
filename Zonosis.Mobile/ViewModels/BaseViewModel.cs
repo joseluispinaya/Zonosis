@@ -11,6 +11,10 @@ namespace Zonosis.Mobile.ViewModels
         [ObservableProperty]
         private bool _isBusy;
 
+        [RelayCommand]
+        private async Task GoToDetailsPage(int petId) =>
+            await GoToAsync($"{nameof(DetailsPage)}?{nameof(DetailsViewModel.PetId)}={petId}");
+
         public async Task GoToAsync(ShellNavigationState state) =>
             await Shell.Current.GoToAsync(state);
         protected async Task GoToAsync(ShellNavigationState state, bool animate) =>

@@ -10,11 +10,35 @@ namespace Zonosis.Mobile.ViewModels
     {
 
         private readonly IRepository _repository;
+        private readonly CommonService _commonService;
+        private readonly AuthService _authService;
         private const string BaseUrl = "https://zonosisapi.azurewebsites.net/";
 
-        public HomeViewModel(IRepository repository)
+        public HomeViewModel(IRepository repository, CommonService commonService, AuthService authService)
         {
             _repository = repository;
+            _commonService = commonService;
+            _authService = authService;
+            _commonService.LoginStatusChanged += OnLoginStatusChanged;
+            SetUserInfo();
+        }
+
+        private void OnLoginStatusChanged(object? sender, EventArgs e)
+        {
+            SetUserInfo();
+        }
+        private void SetUserInfo()
+        {
+            if (_authService.IsLoggedIn)
+            {
+                var userInfo = _authService.GetUser();
+                UserName = userInfo.Name;
+                _commonService.SetToken(userInfo.Token);
+            }
+            else
+            {
+                UserName = "Desconocido";
+            }
         }
 
         [ObservableProperty]
@@ -134,5 +158,9 @@ namespace Zonosis.Mobile.ViewModels
 
             return petsListDto;
         }
+
+        //[RelayCommand]
+        //private async Task GoToDetailsPage(int petId) =>
+        //    await GoToAsync($"{nameof(DetailsPage)}?{nameof(DetailsViewModel.PetId)}={petId}");
     }
 }

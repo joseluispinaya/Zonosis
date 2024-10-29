@@ -45,70 +45,16 @@
             if (isSuccess)
             {
                 await SkipForNow();
+                //Model = new LoginRegisterModel();
             }
             else if (!string.IsNullOrEmpty(errorMessage))
             {
                 await ShowAlertAsync("Error", errorMessage);
             }
             IsBusy = false;
-            //llamo a la api para login o registro
-            //var status = await LoginRegisterAsync(Model);
-            //if (status)
-            //{
-            //    await SkipForNow();
-            //}
-            //await Task.Delay(1000);
-            //await SkipForNow();
 
 
         }
 
-        //public async Task<bool> LoginRegisterAsync(LoginRegisterModel model)
-        //{
-        //    bool retorna = false;
-        //    string url = "https://zonosisapi.azurewebsites.net/";
-        //    if (model.IsNewUser)
-        //    {
-        //        UserDTO userDTO = new()
-        //        {
-        //            Email = model.Email!,
-        //            FirstName = model.Name!,
-        //            Password = model.Password!,
-        //            PhoneNumber = model.Phone!,
-        //            UserType = UserType.User
-        //        };
-
-        //        var responseHttp = await _repository.Post<UserDTO, TokenDTO>(url, "/api/accounts/CreateUser", userDTO);
-
-        //        if (responseHttp.Error)
-        //        {
-        //            var message = await responseHttp.GetErrorMessageAsync();
-        //            await ShowAlertAsync("Error", message!);
-        //            return false;
-        //        }
-        //        retorna = true;
-        //    }
-        //    else
-        //    {
-        //        LoginDTO loginDTO = new()
-        //        {
-        //            Email = model.Email!,
-        //            Password = model.Password!,
-        //        };
-
-        //        var responseHttp = await _repository.Post<LoginDTO, TokenDTO>(url, "/api/accounts/Login", loginDTO);
-
-        //        if (responseHttp.Error)
-        //        {
-        //            var message = await responseHttp.GetErrorMessageAsync();
-        //            await ShowAlertAsync("Error", message!);
-        //            return false;
-        //        }
-        //        retorna = true;
-        //    }
-
-        //    return retorna;
-
-        //}
     }
 }

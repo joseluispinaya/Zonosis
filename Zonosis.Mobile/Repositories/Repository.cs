@@ -78,6 +78,33 @@ namespace Zonosis.Mobile.Repositories
             return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
 
+        public async Task<HttpResponseWrapper<object>> PostFavoAsync<T>(string urlBase, string url, string tokenType, string accessToken)
+        {
+            HttpClient client = new()
+            {
+                BaseAddress = new Uri(urlBase)
+            };
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+            // Usa StringContent vacío ya que el método en el backend no requiere cuerpo
+            var responseHttp = await client.PostAsync(url, new StringContent(""));
+
+            return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
+        }
+
+        public async Task<HttpResponseWrapper<object>> PostModiAsync<T>(string urlBase, string url, T model, string tokenType, string accessToken)
+        {
+            var mesageJSON = JsonSerializer.Serialize(model);
+            var messageContet = new StringContent(mesageJSON, Encoding.UTF8, "application/json");
+            HttpClient client = new()
+            {
+                BaseAddress = new Uri(urlBase)
+            };
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+            var responseHttp = await client.PostAsync(url, messageContet);
+
+            return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
+        }
+
         public async Task<HttpResponseWrapper<object>> Put<T>(string urlBase, string url, T model)
         {
             var messageJson = JsonSerializer.Serialize(model);

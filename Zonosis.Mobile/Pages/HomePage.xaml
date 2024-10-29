@@ -22,12 +22,18 @@
                             HeightRequest="100"
                             Source="{Binding Image}"
                             WidthRequest="100" />
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=GoToDetailsPageCommand}" CommandParameter="{Binding Id}" />
+                        </Frame.GestureRecognizers>
                     </Frame>
                     <Label
                         FontSize="16"
                         HorizontalOptions="Center"
                         Text="{Binding Name}"
                         TextColor="{StaticResource Primary}" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=GoToDetailsPageCommand}" CommandParameter="{Binding Id}" />
+                    </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>
         </ResourceDictionary>
@@ -49,6 +55,9 @@
                     <CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="dtos:PetListDto">
                             <Grid RowDefinitions="*, Auto, Auto" RowSpacing="8">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=GoToDetailsPageCommand}" CommandParameter="{Binding Id}" />
+                                </Grid.GestureRecognizers>
                                 <Frame HeightRequest="250"
                                        WidthRequest="250"
                                        CornerRadius="125"
@@ -59,6 +68,10 @@
                                         HeightRequest="250"
                                         Source="{Binding Image}"
                                         WidthRequest="250" />
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=GoToDetailsPageCommand}" CommandParameter="{Binding Id}" />
+
+                                    </Frame.GestureRecognizers>
                                 </Frame>
                                 <Label
                                     Grid.Row="1"

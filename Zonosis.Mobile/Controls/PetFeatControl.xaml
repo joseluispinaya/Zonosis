@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Zonosis.Mobile.Controls.PetFeatControl"
+             x:Name="this">
+    <Grid
+        BindingContext="{x:Reference this}"
+        ColumnDefinitions="Auto, Auto"
+        ColumnSpacing="4"
+        RowDefinitions="Auto, Auto"
+        RowSpacing="4">
+        <Border
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Style="{StaticResource iconBtnContainer}"
+            VerticalOptions="Start">
+            <Image Source="{Binding Icon}" />
+        </Border>
+        <Label
+            Grid.Row="0"
+            Grid.Column="1"
+            FontAttributes="Bold"
+            FontSize="16"
+            Text="{Binding Label}" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="1"
+            FontSize="12"
+            LineBreakMode="WordWrap"
+            MaximumWidthRequest="100"
+            Text="{Binding Value}" />
+    </Grid>
+</ContentView>

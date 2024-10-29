@@ -17,72 +17,27 @@ namespace Zonosis.Mobile.Services
             _repository = repository;
         }
 
-        public async Task<bool> LoginRegisterAsync(LoginRegisterModel model)
+        public async Task<(bool isSuccess, string? errorMessage)> ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
-            bool retorna = false;
-            string tokenApi = string.Empty;
-            string url = "https://zonosisapi.azurewebsites.net/";
-            if (model.IsNewUser)
+            try
             {
-                UserDTO userDTO = new()
-                {
-                    Email = model.Email!,
-                    FirstName = model.Name!,
-                    Password = model.Password!,
-                    PhoneNumber = model.Phone!,
-                    UserType = UserType.User
-                };
-
-                var responseHttp = await _repository.Post<UserDTO, TokenDTO>(url, "/api/accounts/CreateUser", userDTO);
+                var userInfo = GetUser();
+                var responseHttp = await _repository.PostModiAsync(BaseUrl, "/api/accounts/changePassword", changePasswordDTO, "bearer", userInfo.Token);
 
                 if (responseHttp.Error)
                 {
                     var message = await responseHttp.GetErrorMessageAsync();
-                    await App.Current!.MainPage!.DisplayAlert("Error", message, "Ok");
-                    return false;
+                    return (false, message);
                 }
-                tokenApi = responseHttp.Response!.Token;
-                retorna = true;
+
+                // Si no hay error
+                return (true, string.Empty);
             }
-            else
+            catch (Exception ex)
             {
-                LoginDTO loginDTO = new()
-                {
-                    Email = model.Email!,
-                    Password = model.Password!,
-                };
-
-                var responseHttp = await _repository.Post<LoginDTO, TokenDTO>(url, "/api/accounts/Login", loginDTO);
-
-                if (responseHttp.Error)
-                {
-                    var message = await responseHttp.GetErrorMessageAsync();
-                    await App.Current!.MainPage!.DisplayAlert("Error", message, "Ok");
-                    return false;
-                }
-                tokenApi = responseHttp.Response!.Token;
-                retorna = true;
+                return (false, ex.Message); // Captura cualquier excepción y retorna su mensaje
             }
-            var responsetts = await _repository.GetUserByEmail<UserResponse>(url, $"/api/accounts/Getuser", "bearer", tokenApi);
-
-            if (responsetts.Error)
-            {
-                var message = await responsetts.GetErrorMessageAsync();
-                await App.Current!.MainPage!.DisplayAlert("Error", message, "Ok");
-                return false;
-            }
-            UserResponse userResponse = responsetts.Response!;
-
-            var user = new LoggedInUser(userResponse.Id!, userResponse.FirstName!, tokenApi);
-            SetUser(user);
-
-            _commonService.SetToken(tokenApi);
-            //_commonService.ToggleLoginStatus();
-
-            return retorna;
-
         }
-
 
         public async Task<(bool Success, string? ErrorMessage)> LoginRegisterIaAsync(LoginRegisterModel model)
         {
@@ -100,6 +55,7 @@ namespace Zonosis.Mobile.Services
             var user = new LoggedInUser(userResponse.Id!, userResponse.FirstName!, tokenApi);
             SetUser(user);
             _commonService.SetToken(tokenApi);
+            _commonService.ToggleLoginStatus();
 
             return (true, null);
         }
@@ -109,6 +65,7 @@ namespace Zonosis.Mobile.Services
             var userDTO = new UserDTO
             {
                 Email = model.Email!,
+                UserName = model.Email!,
                 FirstName = model.Name!,
                 Password = model.Password!,
                 PhoneNumber = model.Phone!,
@@ -160,6 +117,7 @@ namespace Zonosis.Mobile.Services
         {
             _commonService.SetToken(null);
             Preferences.Default.Remove(UIConstants.UserInfo);
+            _commonService.ToggleLoginStatus();
             //_commonService.ToggleLoginStatus();
         }
 

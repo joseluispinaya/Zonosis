@@ -1,12 +1,155 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Zonosis.Mobile.Controls"
+             xmlns:dtos="clr-namespace:Zonosis.Mobile.DTOs"
+             xmlns:models="clr-namespace:Zonosis.Mobile.Models"
+             xmlns:vm="clr-namespace:Zonosis.Mobile.ViewModels"
              x:Class="Zonosis.Mobile.Pages.DetailsPage"
-             Title="DetailsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="vm:DetailsViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.PresentationMode="ModalAnimated"
+             BackgroundColor="{StaticResource BgColor}">
+    <Grid
+        Padding="10,20,10,10"
+        RowDefinitions="Auto, *, *, Auto"
+        RowSpacing="20">
+
+        <FlexLayout Grid.Row="0" JustifyContent="SpaceBetween">
+            <Border Style="{StaticResource iconBtnContainer}">
+                <Image Source="left_arrow" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="Detalle Mascota"
+                VerticalOptions="Center" />
+            <Border Style="{StaticResource iconBtnContainer}">
+                <Image Source="heart"
+                       HeightRequest="30"
+                       WidthRequest="30"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center">
+                    <Image.Shadow>
+                        <Shadow />
+                    </Image.Shadow>
+                    <Image.Triggers>
+                        <DataTrigger
+                            Binding="{Binding PetDetail.IsFavorite}"
+                            TargetType="Image"
+                            Value="True">
+                            <Setter Property="Source" Value="heart_filled" />
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleFavoriteCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </FlexLayout>
+        <Frame Grid.Row="1"
+               HeightRequest="300"
+               WidthRequest="300"
+               CornerRadius="150"
+               IsClippedToBounds="True">
+            <Image
+                Aspect="AspectFill"
+                HeightRequest="300"
+                Source="{Binding PetDetail.Image}"
+                WidthRequest="300" />
+
+        </Frame>
+        <Grid
+            Grid.Row="2"
+            ColumnDefinitions="*, *, *"
+            RowDefinitions="Auto, Auto, Auto"
+            RowSpacing="25">
+            <Label
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="{Binding PetDetail.Name}"
+                VerticalOptions="End" />
+
+            <Border
+                Grid.Row="0"
+                Grid.Column="2"
+                Padding="5"
+                BackgroundColor="White"
+                StrokeThickness="0"
+                VerticalOptions="End">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalTextAlignment="End"
+                    Text="{Binding PetDetail.PrecioCade}"
+                    TextColor="{StaticResource Primary}" />
+            </Border>
+
+            <Label
+                Grid.Row="1"
+                Grid.ColumnSpan="3"
+                FontSize="16"
+                LineHeight="1.5"
+                Text="{Binding PetDetail.Description}" />
+
+            <controls:PetFeatControl
+                Grid.Row="2"
+                Grid.Column="0"
+                Icon="breed"
+                Label="Raza"
+                Value="{Binding PetDetail.Raza}" />
+
+
+            <controls:PetFeatControl
+                Grid.Row="2"
+                Grid.Column="1"
+                Icon="{Binding PetDetail.GeneroImage}"
+                Label="Genero"
+                Value="{Binding PetDetail.GeneroDisplay}" />
+
+
+            <controls:PetFeatControl
+                Grid.Row="2"
+                Grid.Column="2"
+                Icon="calendar"
+                Label="Edad"
+                Value="{Binding PetDetail.Edad}" />
+        </Grid>
+
+        <Button
+            Grid.Row="3"
+            Command="{Binding AdoptNowCommand}"
+            Style="{StaticResource btnPrimary}"
+            Text="..."
+            IsEnabled="False">
+            <Button.Triggers>
+                <DataTrigger
+                    Binding="{Binding PetDetail.AdoptionStatus}"
+                    TargetType="Button"
+                    Value="Adoptado">
+                    <Setter Property="Text" Value="Adoptado" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger
+                    Binding="{Binding PetDetail.AdoptionStatus}"
+                    TargetType="Button"
+                    Value="Disponible">
+                    <Setter Property="Text" Value="Adop Now" />
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
+
+        <ActivityIndicator
+            Grid.RowSpan="4"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            VerticalOptions="Center"
+            Color="{StaticResource Primary}" />
+    </Grid>
 </ContentPage>

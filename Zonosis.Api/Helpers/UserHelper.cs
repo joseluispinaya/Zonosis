@@ -30,6 +30,11 @@ namespace Zonosis.Api.Helpers
             await _userManager.AddToRoleAsync(user, roleName);
         }
 
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
         public async Task CheckRoleAsync(string roleName)
         {
             bool roleExists = await _roleManager.RoleExistsAsync(roleName);

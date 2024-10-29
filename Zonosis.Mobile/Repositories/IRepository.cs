@@ -18,6 +18,9 @@ namespace Zonosis.Mobile.Repositories
 
         Task<HttpResponseWrapper<object>> Put<T>(string urlBase, string url, T model);
 
+        Task<HttpResponseWrapper<object>> PostFavoAsync<T>(string urlBase, string url, string tokenType, string accessToken);
+
         Task<HttpResponseWrapper<TResponse>> Put<T, TResponse>(string urlBase, string url, T model);
+        Task<HttpResponseWrapper<object>> PostModiAsync<T>(string urlBase, string url, T model, string tokenType, string accessToken);
     }
 }
