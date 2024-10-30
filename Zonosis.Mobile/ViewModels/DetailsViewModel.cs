@@ -1,11 +1,15 @@
-﻿namespace Zonosis.Mobile.ViewModels
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using Zonosis.Shared;
+
+namespace Zonosis.Mobile.ViewModels
 {
     [QueryProperty(nameof(PetId), nameof(PetId))]
-    public partial class DetailsViewModel : BaseViewModel
+    public partial class DetailsViewModel : BaseViewModel, IAsyncDisposable
     {
         private readonly IRepository _repository;
         private readonly AuthService _authService;
         private const string BaseUrl = "https://zonosisapi.azurewebsites.net/";
+        private HubConnection? _hubConnection;
 
         public DetailsViewModel(IRepository repository, AuthService authService)
         {
@@ -26,6 +30,8 @@
             try
             {
                 await Task.Delay(100);
+                await ConfigureSignalRHubConnectionAsync(value);
+
                 PetDetail = await FetchPetDetailsAsync(value);
             }
             catch (Exception ex)
@@ -90,32 +96,44 @@
             };
         }
 
+        private async Task ConfigureSignalRHubConnectionAsync(int currentPetId)
+        {
+            try
+            {
+                _hubConnection = new HubConnectionBuilder()
+                    .WithUrl(AppConstants.HubFullUrl)
+                    .Build();
 
-        //private async Task<PetDetailDTO> FetchPetDetailsAsync(int petId)
-        //{
-        //    var response = await GetPetDetailsAsync(petId);
+                _hubConnection.On<int>(nameof(IPetHubClient.PetIsBeingViewed), async petId =>
+                {
+                    if (currentPetId == petId)
+                    {
+                        await App.Current!.Dispatcher.DispatchAsync(() => ShowToastAsync("Alguien más está viendo esta mascota."));
+                    }
+                });
 
-        //    return response ?? new PetDetailDTO();
-        //}
+                _hubConnection.On<int>(nameof(IPetHubClient.PetAdopted), async petId =>
+                {
+                    if (currentPetId == petId)
+                    {
+                        PetDetail.AdoptionStatus = AdoptionStatus.Adoptado;
+                        await App.Current!.Dispatcher.DispatchAsync(() => ShowToastAsync("Alguien adoptó esta mascota. No podrás adoptarla ahora"));
+                    }
+                });
 
-        //private async Task<PetDetailDTO?> GetPetDetailsAsync(int petId)
-        //{
-        //    var response = await _repository.Get<PetDetailDTO>(BaseUrl, $"/api/mascotas/{petId}");
+                await _hubConnection.StartAsync();
+                await _hubConnection.SendAsync(nameof(IPetHubServer.ViewingThisPet), currentPetId);
 
-        //    return await HandleApiResponseAsync(response);
-        //}
-
-        //private async Task<PetDetailDTO?> HandleApiResponseAsync(HttpResponseWrapper<PetDetailDTO> response)
-        //{
-        //    if (response.Error)
-        //    {
-        //        var message = await response.GetErrorMessageAsync();
-        //        await ShowAlertAsync("Error", message!);
-        //        return null;
-        //    }
-
-        //    return response.Response;
-        //}
+            }
+            catch
+            {
+                // Eat out this exception
+                // This is not an essential feature for this app
+                // If there is some issue with this signalr connection, we can skip it
+                // as the app will work fine without signalr as well
+                //throw;
+            }
+        }
 
         [RelayCommand]
         private async Task GoBack() => await GoToAsync("..");
@@ -173,6 +191,16 @@
                 if (!responseHttp.Error)
                 {
                     PetDetail.AdoptionStatus = AdoptionStatus.Adoptado;
+                    if (_hubConnection is not null)
+                    {
+                        try
+                        {
+                            await _hubConnection.SendAsync(nameof(IPetHubServer.PetAdopted), PetId);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
                     await GoToAsync(nameof(AdoptionSuccessPage));
                 }
                 else
@@ -186,6 +214,29 @@
             {
                 await ShowAlertAsync("Error en la adopción", ex.Message);
                 IsBusy = false;
+            }
+        }
+
+        //public void Dispose()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public async ValueTask DisposeAsync() => await StopHubConnection();
+
+        public async Task StopHubConnection()
+        {
+            if (_hubConnection is not null)
+            {
+                try
+                {
+                    await _hubConnection.SendAsync(nameof(IPetHubServer.ReleaseViewingThisPet), PetId);
+                    await _hubConnection.StopAsync();
+                }
+                catch (Exception)
+                {
+                    // Skip this exception
+                }
             }
         }
     }

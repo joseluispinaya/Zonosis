@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Zonosis.Api.Data;
 using Zonosis.Api.Helpers;
+using Zonosis.Api.Hubs;
+using Zonosis.Shared;
 using Zonosis.Shared.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -82,6 +84,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
         ClockSkew = TimeSpan.Zero
     });
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -105,17 +108,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
-
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
     .SetIsOriginAllowed(origin => true)
     .AllowCredentials());
 
-//var uriBack = "https://localhost:7084";
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+
+app.MapHub<PetHub>(AppConstants.HubPattern);
+
+
+
 app.Run();
-//app.Run("https://localhost:7084");
