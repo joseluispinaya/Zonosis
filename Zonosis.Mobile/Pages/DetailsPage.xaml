@@ -8,8 +8,7 @@
              x:Class="Zonosis.Mobile.Pages.DetailsPage"
              x:DataType="vm:DetailsViewModel"
              Shell.NavBarIsVisible="False"
-             Shell.PresentationMode="ModalAnimated"
-             BackgroundColor="{StaticResource BgColor}">
+             Shell.PresentationMode="ModalAnimated">
     <Grid
         Padding="10,20,10,10"
         RowDefinitions="Auto, *, *, Auto"
@@ -139,7 +138,7 @@
                     Binding="{Binding PetDetail.AdoptionStatus}"
                     TargetType="Button"
                     Value="Disponible">
-                    <Setter Property="Text" Value="Adop Now" />
+                    <Setter Property="Text" Value="Adoptar ya" />
                     <Setter Property="IsEnabled" Value="True" />
                 </DataTrigger>
             </Button.Triggers>

@@ -1,0 +1,86 @@
+﻿@page "/pets/create"
+
+@if (loading)
+{
+    <Loading />
+}
+else
+{
+    <EditForm Model="petDto" OnValidSubmit="CreteUserAsync">
+        <DataAnnotationsValidator />
+
+        <div class="card">
+            <div class="card-header">
+                <span>
+                    <i class="bi bi-person" /> Registrar Mascota
+                    <a class="btn btn-sm btn-secondary float-end" href="/pets"><i class="bi bi-key" /> Regresar</a>
+                    <button class="btn btn-sm btn-primary float-end mx-2" type="submit"><i class="bi bi-floppy" /> Guardar Cambios</button>
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label>Nombre:</label>
+                                    <div>
+                                        <InputText class="form-control" @bind-Value="@petDto.Name" />
+                                        <ValidationMessage For="@(() => petDto.Name)" />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label>Precio:</label>
+                                    <div>
+                                        <InputNumber class="form-control" @bind-Value="@petDto.Price" />
+                                        <ValidationMessage For="@(() => petDto.Price)" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label>Raza:</label>
+                                    <div>
+                                        <InputText class="form-control" @bind-Value="@petDto.Raza" />
+                                        <ValidationMessage For="@(() => petDto.Raza)" />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label>Nacido en:</label>
+                                    <div>
+                                        <InputDate class="form-control" @bind-Value="@petDto.DateNacido" />
+                                        <ValidationMessage For="@(() => petDto.DateNacido)" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Descripcion:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@petDto.Description" />
+                                <ValidationMessage For="@(() => petDto.Description)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="generoSelect">Seleccione el Género:</label>
+                            <div>
+                                <select id="generoSelect" class="form-select" @onchange="OnGeneroChange">
+                                    <option value="-1">-- Seleccione Género --</option>
+                                    @foreach (var item in selected)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <InputFoto Label="Imagen" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}

@@ -1,0 +1,57 @@
+﻿@page "/pets"
+
+<div class="card">
+    <div class="card-header">
+        <span>
+            <i class="bi bi-github" /> Mascotas
+            <a class="btn btn-sm btn-primary float-end" href="/pets/create"><i class="bi bi-plus-square" /> Nuevo</a>
+            <a class="btn btn-sm btn-info float-end" style="margin-right: 10px;"><i class="bi bi-box2" /> Ver Todo</a>
+        </span>
+    </div>
+    <div class="card-body">
+        <GenericoLista MyList="Pets">
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Raza</th>
+                            <th>Precio</th>
+                            <th>Fecha</th>
+                            <th>Imagene</th>
+                            <th style="width:320px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pet in Pets!)
+                        {
+                            <tr>
+                                <td>
+                                    @pet.Name
+                                </td>
+                                <td>
+                                    @pet.Raza
+                                </td>
+                                <td>
+                                    @($"Bs/ {pet.Price:0.00}")
+                                </td>
+                                <td>
+                                    @pet.DateNacido.ToLocalTime().ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    <img src="@pet.ImageFull" style="width:40px;" />
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-sm"><i class="bi bi-card-list" /> Detalles</a>
+                                    <a class="btn btn-warning btn-sm"><i class="bi bi-pencil" /> Editar</a>
+                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash" /> Borrar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </Body>
+        </GenericoLista>
+    </div>
+</div>
+

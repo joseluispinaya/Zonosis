@@ -60,6 +60,7 @@ builder.Services.AddDbContext<DataContext>(cfg =>
 
 builder.Services.AddTransient<SeedDb>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<IFileStorage, FileStorage>();
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Zonosis.Api.Data;
 using Zonosis.Api.Helpers;
 using Zonosis.Shared.DTOs;
 using Zonosis.Shared.Entities;
@@ -18,12 +20,37 @@ namespace Zonosis.Api.Controllers
     {
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
+        private readonly DataContext _context;
 
-        public AccountsController(IUserHelper userHelper, IConfiguration configuration)
+        public AccountsController(IUserHelper userHelper, IConfiguration configuration, DataContext context)
         {
             _userHelper = userHelper;
             _configuration = configuration;
+            _context = context;
         }
+
+        [HttpGet("usuarios")]
+        public async Task<ActionResult> GetUserFullAsync()
+        {
+            return Ok(await _context.Users.ToListAsync());
+        }
+
+        [HttpGet("favoritos/{userId}")]
+        public async Task<ActionResult> GetUserFavoritosAsync(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
+            var pets = await _context.UserFavoritess
+                            .Where(uf => uf.UserId == userId)
+                            .Select(uf => uf.Pet)
+                            .ToListAsync();
+
+            return Ok(pets);
+        }
+
 
         [HttpGet("Getuser")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

@@ -65,9 +65,9 @@ namespace Zonosis.Mobile.ViewModels
             {
                 await Task.Delay(100);
                 // Llamar a NewlyAddedTask y asignar el resultado a NewlyAdded
-                NewlyAdded = await NewlyAddedTask(2);
-                Poplar = await PopularPetsTask(2);
-                Random = await RandomPetsTask(2);
+                NewlyAdded = await NewlyAddedTask(4);
+                Poplar = await PopularPetsTask(5);
+                Random = await RandomPetsTask(5);
 
                 _isInitialized = true;
             }
