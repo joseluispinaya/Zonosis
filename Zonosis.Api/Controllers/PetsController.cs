@@ -27,6 +27,41 @@ namespace Zonosis.Api.Controllers
         {
             return Ok(await _context.Pets.ToListAsync());
         }
+
+        [HttpGet("paginated")]
+        public async Task<ActionResult> Get([FromQuery] PaginationDTO pagination)
+        {
+            var queryable = _context.Pets
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            return Ok(await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(pagination)
+                .ToListAsync());
+        }
+
+
+        [HttpGet("totalPages")]
+        public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
+        {
+            var queryable = _context.Pets
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            double count = await queryable.CountAsync();
+            double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+            return Ok(totalPages);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(int id)
         {

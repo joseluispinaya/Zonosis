@@ -1,0 +1,40 @@
+﻿@page "/Login"
+
+<div class="row justify-content-center">
+    <div class="col-md-4 mx-auto">
+
+        <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
+            <DataAnnotationsValidator />
+
+            <div class="card bg-light">
+                <div class="card-header justify-content-center">
+                    <span>
+                        <i class="bi bi-person-lock" /> Iniciar Sesión
+                        <button class="btn btn-sm btn-primary float-end" type="submit"><i class="bi bi-box-arrow-in-right" /> Iniciar Sesión</button>
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label>Email:</label>
+                        <div>
+                            <InputText class="form-control form-control-sm" @bind-Value="@loginDTO.Email" />
+                            <ValidationMessage For="@(() => loginDTO.Email)" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Contraseña:</label>
+                        <div>
+                            <InputText type="password" class="form-control form-control-sm" @bind-Value="@loginDTO.Password" />
+                            <ValidationMessage For="@(() => loginDTO.Password)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p><a class="btn btn-link" href="/Register">Resgitrate aquí</a></p>
+                    <p><a class="btn btn-link" href="/ResendToken">Activación de cuenta</a></p>
+                    <p><a class="btn btn-link" href="/RecoverPassword">¿Has olvidado tu contraseña?</a></p>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>

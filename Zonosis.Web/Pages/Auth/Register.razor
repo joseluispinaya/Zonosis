@@ -1,0 +1,62 @@
+﻿@page "/Register"
+
+@if (loading)
+{
+    <Loading />
+}
+else
+{
+    <div class="row justify-content-center">
+        <div class="col-md-8 mx-auto">
+
+            <EditForm Model="userDTO" OnValidSubmit="CreteUserAsync">
+                <DataAnnotationsValidator />
+
+                <div class="card bg-light">
+                    <div class="card-header justify-content-center">
+                        <span>
+                            <i class="bi bi-key" /> Registrar Nuevo  Usuario
+                            <button class="btn btn-sm btn-primary float-end" type="submit"><i class="bi bi-person-add" /> Registrar</button>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label>Nombres:</label>
+                                    <div>
+                                        <InputText class="form-control" @bind-Value="@userDTO.FirstName" />
+                                        <ValidationMessage For="@(() => userDTO.FirstName)" />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label>Celular:</label>
+                                    <div>
+                                        <InputText class="form-control" @bind-Value="@userDTO.PhoneNumber" />
+                                        <ValidationMessage For="@(() => userDTO.PhoneNumber)" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label>Email:</label>
+                                    <div>
+                                        <InputText class="form-control" @bind-Value="@userDTO.Email" />
+                                        <ValidationMessage For="@(() => userDTO.Email)" />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label>Contraseña:</label>
+                                    <div>
+                                        <InputText type="password" class="form-control" @bind-Value="@userDTO.Password" />
+                                        <ValidationMessage For="@(() => userDTO.Password)" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}

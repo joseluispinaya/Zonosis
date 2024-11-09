@@ -9,8 +9,15 @@
         </span>
     </div>
     <div class="card-body">
+        <Filter PlaceHolder="Buscar Mascota..." Callback=@FilterCallBack />
+
         <GenericoLista MyList="Pets">
             <Body>
+                <Pagination CurrentPage="currentPage"
+                            TotalPages="totalPages"
+                            SelectedPage="SelectedPageAsync"
+                            RecordsNumber="SelectedRecordsNumberAsync" />
+
                 <table class="table table-striped">
                     <thead>
                         <tr>

@@ -28,7 +28,11 @@ namespace Zonosis.Web.Repositories
 
             return new HttpResponseWrapper<T>(default, true, responseHttp);
         }
-
+        public async Task<HttpResponseWrapper<object>> PostFavoAsync<T>(string url)
+        {
+            var responseHttp = await _httpClient.PostAsync(url, new StringContent(""));
+            return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
+        }
         public async Task<HttpResponseWrapper<object>> Post<T>(string url, T model)
         {
             var messageJSON = JsonSerializer.Serialize(model);
@@ -77,5 +81,7 @@ namespace Zonosis.Web.Repositories
             var response = await responseHttp.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(response, _jsonDefaultOptions)!;
         }
+
+        
     }
 }
