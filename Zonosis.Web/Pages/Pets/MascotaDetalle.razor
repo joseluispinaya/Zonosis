@@ -1,0 +1,65 @@
+﻿@page "/mascotas/details/{PetId:int}"
+
+
+@if (loading)
+{
+    <Loading />
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <span>
+                <i class="bi bi-star" /> @pet!.Name
+                <a class="btn btn-sm btn-success float-end" href="/destacados"><i class="bi bi-arrow-left" /> Regresar</a>
+                <button class="btn btn-sm btn-primary float-end" style="margin-right: 10px;" @onclick=@(() => AddToCartAsync(pet.Id))><i class="bi bi-cart-plus" /> Add favorito</button>
+            </span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label>Nombre:</label>
+                        <div>
+                            <b>@pet.Name</b>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Raza:</label>
+                        <div>
+                            <b>@pet.Raza</b>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Edad:</label>
+                        <div>
+                            <b>@pet.Edad</b>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Precio:</label>
+                        <div>
+                            <b>@($"Bs/ {pet.Price:0.00}")</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label>Descripción:</label>
+                        <div>
+                            <b>@pet.Description</b>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Foto:</label>
+                        <div class="text-center">
+                            <div style="margin: 10px">
+                                <img src="@pet.Image" width="100" height="100" style="border-radius:50%" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

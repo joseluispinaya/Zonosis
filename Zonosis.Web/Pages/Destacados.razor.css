@@ -1,0 +1,47 @@
+﻿/*.containerz {
+    position: relative;
+    padding: 0px 1%;
+    width: auto;
+}
+
+    .containerz > i {
+        position: absolute;
+        top: 40%;
+        z-index: 1;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        background-color: white;
+        color: black;
+        box-shadow: 0 6px 4px rgba(0, 0, 0, 0.9), 0 0 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bolder;
+    }
+
+        .containerz > i:first-child {
+            left: -8px;
+            visibility: hidden;
+        }
+
+        .containerz > i:last-child {
+            right: -8px;
+            visibility: hidden;
+        }
+
+        .containerz > i:hover {
+            background-color: gray;
+        }
+
+.carouselz {
+    display: grid;
+    grid-auto-columns: calc(92.2% / 7);
+    grid-auto-flow: column;
+    gap: 0.8%;
+    user-select: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+*/

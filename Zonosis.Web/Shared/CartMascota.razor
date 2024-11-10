@@ -1,0 +1,23 @@
+﻿<div class="my-2">
+    <MudCarousel Class="mud-width-full"
+                 Style="height:200px;"
+                 ShowArrows="@arrows"
+                 ShowBullets="@bullets"
+                 EnableSwipeGesture="@enableSwipeGesture"
+                 AutoCycle="@autocycle"
+                 TData="object">
+        @foreach (var image in Pets)
+        {
+            <MudCarouselItem Transition="transition" Color="@Color.Primary">
+                <div class="image-container d-flex" style="height:100%; justify-content:center; position: relative;">
+                    <img src="@image.ImageFull" />
+                    <a href="/mascotas/details/@image.Id"
+                       class="btn btn-sm btn-secondary"
+                       style="position: absolute; top: 10px; left: 90px; padding: 5px 10px; border-radius: 5px;">
+                        <i class="bi bi-info-circle"></i> Ver a @image.Name
+                    </a>
+                </div>
+            </MudCarouselItem>
+        }
+    </MudCarousel>
+</div>

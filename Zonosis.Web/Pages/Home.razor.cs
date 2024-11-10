@@ -15,7 +15,7 @@ namespace Zonosis.Web.Pages
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
-        [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
+        [CascadingParameter] private Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,7 +40,7 @@ namespace Zonosis.Web.Pages
 
         private async Task CheckIsAuthenticatedAsync()
         {
-            var authenticationState = await authenticationStateTask;
+            var authenticationState = await AuthenticationStateTask;
             isAuthenticated = authenticationState.User.Identity!.IsAuthenticated;
         }
         private async Task LoadCounterAsync()

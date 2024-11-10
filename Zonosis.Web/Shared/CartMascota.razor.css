@@ -1,0 +1,120 @@
+﻿/*.product-card {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 68% auto auto auto;
+    background: #f3f0f0;
+    position: relative;
+}
+
+.product-card {
+    height: 325px;
+    min-width: 180px;
+    max-width: 260px;
+    cursor: pointer;
+}
+
+.badge-discount {
+    position: absolute;
+    background: #FF3333;
+    border-radius: 50rem;
+    font-weight: 600;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    padding-top: .1rem;
+    font-size: 85%;
+    margin: 3%;
+}
+
+.img {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.brand {
+    position: relative;
+    background: #534e4e;
+    font-weight: 600;
+    padding-left: .20rem;
+    padding-right: .20rem;
+    font-size: 85%;
+    top: 88%;
+}
+
+.title {
+    text-decoration: none;
+    font-size: 100%;
+    display: block;
+    white-space: normal;
+    font-weight: 600;
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+}
+
+.price {
+    margin-left: 1.5%;
+    margin-right: 2%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.price-whole {
+    font-weight: bold;
+    font-size: 121%;
+    align-self: center;
+    margin-bottom: 2px;
+}
+
+.price-symbol, .price-fraction {
+    font-size: 75%;
+    align-self: center;
+    margin-top: -1.4%;
+}
+
+.original-price {
+    color: #565959;
+    text-decoration: line-through;
+    margin-left: 2.5%;
+    font-size: 85%;
+    margin-bottom: 2px;
+}
+
+.discount-percentage {
+    font-size: 90%;
+    color: #FF3333;
+    margin-left: 1.0%;
+    margin-bottom: 5px;
+}
+
+.sizes {
+    display: flex;
+    align-items: center;
+    white-space: normal;
+    align-self: center;
+}
+
+.size {
+    font-size: 95%;
+    font-weight: 500;
+    margin-left: 1%;
+    margin-right: 1.0%;
+}
+
+    .size:not(:first-child) {
+        font-size: 90%;
+        font-weight: 500;
+        margin-left: 1%;
+        margin-right: 1.0%;
+        color: #565959;
+        font-style: italic;
+    }*/
+/*﻿﻿.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid lightgray;
+    box-shadow: 2px 2px 8px 4px #d3d3d3d1;
+    border-radius: 15px;
+    font-family: sans-serif;
+    margin: 5px;
+}*/
