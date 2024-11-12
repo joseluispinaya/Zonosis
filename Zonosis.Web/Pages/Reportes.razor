@@ -1,0 +1,39 @@
+﻿@page "/reportes"
+
+<div class="card">
+    <div class="card-header">
+        <span>
+            <i class="bi bi-people" /> Detalle Usuario
+            <a class="btn btn-sm btn-primary float-end" href="/"><i class="bi bi-arrow-left me-1" /> Inicio</a>
+            <button class="btn btn-sm btn-success float-end mx-2" @onclick="(()=> Export())"><i class="bi bi-floppy" /> Generar PDF</button>
+        </span>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-github" /> Mascotas favoritas
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>Email:</label>
+                            <div>
+                                <InputText class="form-control form-control-sm" @bind-Value="Texto" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-github" /> Mascotas favoritas
+                    </div>
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

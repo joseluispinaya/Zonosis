@@ -1,4 +1,7 @@
 ﻿using Microsoft.JSInterop;
+using System.Text.Json;
+using Zonosis.Shared.DTOs;
+using Zonosis.Shared.Entities;
 
 namespace Zonosis.Web.Helpers
 {
@@ -17,6 +20,22 @@ namespace Zonosis.Web.Helpers
         public static ValueTask<object> RemoveLocalStorage(this IJSRuntime js, string key)
         {
             return js.InvokeAsync<object>("localStorage.removeItem", key);
+        }
+
+        public static ValueTask Reporte(this IJSRuntime js, string texto)
+        {
+            return js.InvokeVoidAsync("GenerarPDF", texto);
+        }
+        public static ValueTask ReportePet(this IJSRuntime js, Pet pet)
+        {
+            var petJson = JsonSerializer.Serialize(pet);
+            return js.InvokeVoidAsync("GenerarPDFPET", petJson);
+        }
+
+        public static ValueTask ReportePetDt(this IJSRuntime js, PetDetailDTO pet)
+        {
+            var petJson = JsonSerializer.Serialize(pet);
+            return js.InvokeVoidAsync("GenerarPDFPET", petJson);
         }
     }
 }

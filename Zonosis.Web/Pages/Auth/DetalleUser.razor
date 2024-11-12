@@ -1,0 +1,77 @@
+﻿@page "/userdet/pet/{UserId}"
+
+
+@if (loading)
+{
+    <Loading />
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <span>
+                <i class="bi bi-people" /> Detalle Usuario
+                <a class="btn btn-sm btn-primary float-end" href="/users"><i class="bi bi-arrow-left me-1" /> Volver</a>
+            </span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Informacion
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@user!.FirstName</h5>
+                            <p class="card-text" style="margin-bottom: 0.5rem;">Correo: @user.Email</p>
+                            <p class="card-text" style="margin-bottom: 0.5rem;">Celular: @user.PhoneNumber</p>
+                            <p class="card-text">Tipo de user: @(user.UserType == UserType.Admin ? "Administrador" : "Usuario")</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Cantidad de adopciones
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="bi bi-github" /> Mascotas favoritas
+                        </div>
+                        <div class="card-body">
+                            @if (pets == null || pets.Count == 0)
+                            {
+                                <p>No hay registros para mostrar...</p>
+                            }
+                            else
+                            {
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Raza</th>
+                                            <th>Precio</th>
+                                            <th>Imagen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var pet in pets)
+                                        {
+                                            <tr>
+                                                <td>@pet.Name</td>
+                                                <td>@pet.Raza</td>
+                                                <td>@($"Bs/ {pet.Price:0.00}")</td>
+                                                <td>
+                                                    <img src="@pet.ImageFull" style="width:30px;" />
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

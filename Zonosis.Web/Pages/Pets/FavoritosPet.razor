@@ -1,0 +1,40 @@
+﻿@page "/Favorito/ShowFavoritos"
+
+
+@if (Pets is null)
+{
+    <Loading />
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <span>
+                <i class="bi bi-star" /> Mascotas Favoritas
+                <a class="btn btn-sm btn-success float-end" href="/"><i class="bi bi-arrow-left" /> Regresar</a>
+            </span>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-4 g-4 mt-1">
+                @foreach (var product in Pets!)
+                {
+                    <div class="col">
+                        <div class="cardz h-100">
+                            <div class="text-center zoom" style="margin-top: 10px;">
+                                <img src="@product.ImageFull" style="height:150px; max-width:150px; border-radius: 50%;" class="text-center" alt=@product.Name />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-navy" style="margin-bottom: 0;"> @product.Name</h5>
+                                <p class="card-text smfnt" style="margin-bottom: 0;">@product.Raza</p>
+                                <h5 class="text-muted">@($"Bs/ {product.Price:0.00}")</h5>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-sm btn-primary" @onclick=@(() => RemovToPetAsync(product.Id))><i class="bi bi-heart-fill" style="color: red;" /> Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

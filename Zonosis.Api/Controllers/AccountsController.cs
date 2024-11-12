@@ -51,6 +51,20 @@ namespace Zonosis.Api.Controllers
             return Ok(pets);
         }
 
+        [HttpGet("adoptions/{userId}")]
+        public async Task<ActionResult> GetUserAdoptionsAsync(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+            var pets = await _context.UserAdoptions
+                            .Where(uf => uf.UserId == userId)
+                            .Select(uf => uf.Pet)
+                            .ToListAsync();
+            return Ok(pets);
+        }
+
 
         [HttpGet("Getuser")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

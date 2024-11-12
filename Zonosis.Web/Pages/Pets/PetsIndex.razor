@@ -25,8 +25,9 @@
                             <th>Raza</th>
                             <th>Precio</th>
                             <th>Fecha</th>
+                            <th>Estado</th>
                             <th>Imagene</th>
-                            <th style="width:320px"></th>
+                            <th style="width:220px"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,12 +47,14 @@
                                     @pet.DateNacido.ToLocalTime().ToString("dd/MM/yyyy")
                                 </td>
                                 <td>
-                                    <img src="@pet.ImageFull" style="width:40px;" />
+                                    @(pet.AdoptionStatus == AdoptionStatus.Adoptado ? "Adoptado" : "Disponoble")
+                                </td>
+                                <td>
+                                    <img src="@pet.ImageFull" style="width:30px;" />
                                 </td>
                                 <td>
                                     <a class="btn btn-info btn-sm"><i class="bi bi-card-list" /> Detalles</a>
                                     <a class="btn btn-warning btn-sm"><i class="bi bi-pencil" /> Editar</a>
-                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash" /> Borrar</button>
                                 </td>
                             </tr>
                         }

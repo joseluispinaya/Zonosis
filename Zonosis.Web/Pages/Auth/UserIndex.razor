@@ -1,0 +1,47 @@
+﻿@page "/users"
+
+
+@if (Users is null)
+{
+    <Loading />
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <span>
+                <i class="bi bi-people" /> Usuarios
+                <a class="btn btn-sm btn-primary float-end" href="/register"><i class="bi bi-plus-circle" /> Adicionar Administrador</a>
+            </span>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Celular</th>
+                        <th>Email</th>
+                        <th>Tipo Usuario</th>
+                        <th style="width:210px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Users)
+                    {
+                        <tr>
+                            <td>@user.FirstName</td>
+                            <td>@user.PhoneNumber</td>
+                            <td>@user.Email</td>
+                            <td>@(user.UserType == UserType.Admin ? "Administrador" : "Usuario")</td>
+                            <td>
+                                <a href="/userdet/pet/@user.Id" class="btn btn-warning btn-sm"><i class="bi bi-github" /> Detalle</a>
+                                <button class="btn btn-danger btn-sm"><i class="bi bi-pencil" /> Editar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

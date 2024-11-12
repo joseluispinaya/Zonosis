@@ -3,6 +3,8 @@ using Microsoft.JSInterop;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using Zonosis.Shared.DTOs;
+using Zonosis.Shared.Entities;
 using Zonosis.Web.Helpers;
 using Zonosis.Web.Services;
 
@@ -59,6 +61,21 @@ namespace Zonosis.Web.AuthenticationProviders
             await _jSRuntime.RemoveLocalStorage(_tokenKey);
             _httpClient.DefaultRequestHeaders.Authorization = null;
             NotifyAuthenticationStateChanged(Task.FromResult(_anonimous));
+        }
+
+        public async Task ReportAsync(string texto)
+        {
+            await _jSRuntime.Reporte(texto);
+        }
+
+        public async Task ReportPetAsync(Pet pet)
+        {
+            await _jSRuntime.ReportePet(pet);
+        }
+
+        public async Task ReportPetDtAsync(PetDetailDTO pet)
+        {
+            await _jSRuntime.ReportePetDt(pet);
         }
     }
 }

@@ -102,7 +102,7 @@ namespace Zonosis.Web.Pages.Pets
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-            NavigationManager.NavigateTo("/destacados");
+            NavigationManager.NavigateTo("/");
 
             var toast2 = SweetAlertService.Mixin(new SweetAlertOptions
             {

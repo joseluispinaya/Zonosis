@@ -34,6 +34,81 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+    <script>
+        window.GenerarPDF = async (Texto) => {
+            const doc = new jsPDF();
+            const tituloEstilo = {
+                fontSize: 16,
+                fontStyle: 'bold',
+                textAlign: 'center',
+                marginBottom: 10
+            };
+
+            const subtituloEstilo = {
+                fontSize: 14,
+                fontStyle: 'bold',
+                marginBottom: 5
+            };
+
+            const contenidoEstilo = {
+                fontSize: 12,
+                marginBottom: 5
+            };
+
+            // Contenido del recibo
+            const titulo = "Recibo de Compra";
+            const subtitulo = "Detalles de la compra:";
+            const contenido = "Producto: Zapatos\nPrecio: $50.00\nCantidad: 1\nTotal: $50.00";
+
+            doc.text(titulo, 85, 20, tituloEstilo);
+            doc.text(subtitulo, 20, 40, subtituloEstilo);
+            doc.text(contenido, 20, 60, contenidoEstilo);
+            doc.text(Texto, 20, 100, contenidoEstilo);
+
+            doc.save("test.pdf");//GRACIAS SEÑOR QUE ESTO FUNCIONA
+
+        }
+    </script>
+    <script>
+        window.GenerarPDFPET = async (petJson) => {
+            const pet = JSON.parse(petJson);
+            const doc = new jsPDF();
+            const tituloEstilo = {
+                fontSize: 16,
+                fontStyle: 'bold',
+                textAlign: 'center',
+                marginBottom: 10
+            };
+
+            const subtituloEstilo = {
+                fontSize: 14,
+                fontStyle: 'bold',
+                marginBottom: 5
+            };
+
+            const contenidoEstilo = {
+                fontSize: 12,
+                marginBottom: 5
+            };
+
+            // Contenido del recibo
+            const titulo = `Nombre es ${pet.Name}`;
+            const subtitulo = `Raza ${pet.Raza}`;
+            const contenido = `Edad: ${pet.Edad}\nPrecio: $${pet.Price}\nGenero: ${pet.GeneroDisplay}`;
+
+            doc.text(titulo, 85, 20, tituloEstilo);
+            doc.text(subtitulo, 20, 40, subtituloEstilo);
+            doc.text(contenido, 20, 60, contenidoEstilo);
+            //doc.text(Texto, 20, 100, contenidoEstilo);
+
+            doc.save("testpet.pdf");
+
+        }
+    </script>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetAlert2.min.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
