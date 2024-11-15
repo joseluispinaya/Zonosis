@@ -1,7 +1,9 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using Zonosis.Shared.DTOs;
 using Zonosis.Shared.Entities;
 using Zonosis.Web.Repositories;
+using Zonosis.Web.Services;
 
 namespace Zonosis.Web.Pages.Auth
 {
@@ -13,6 +15,7 @@ namespace Zonosis.Web.Pages.Auth
 
         //[Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
+        [Inject] private ILoginService LoginService { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Parameter] public string? UserId { get; set; }
 
@@ -57,6 +60,18 @@ namespace Zonosis.Web.Pages.Auth
             }
 
             loading = false;
+        }
+
+        private async Task GenerateInvoice()
+        {
+            var httpActionResponse = await Repository.Get<UserDetailDTO>($"/api/accounts/favorinue/{UserId}");
+            if (httpActionResponse.Error)
+            {
+                var message = await httpActionResponse.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            await LoginService.ReportUserDtAsync(httpActionResponse.Response!);
         }
 
         //private async Task LoadUserDetalleAsync()

@@ -11,5 +11,6 @@ namespace Zonosis.Web.Services
         Task ReportAsync(string texto);
         Task ReportPetAsync(Pet pet);
         Task ReportPetDtAsync(PetDetailDTO pet);
+        Task ReportUserDtAsync(UserDetailDTO user);
     }
 }

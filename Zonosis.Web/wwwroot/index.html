@@ -38,6 +38,8 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/jspdf-invoice-template/dist/jspdf-invoice-template.min.js"></script>-->
     <script>
         window.GenerarPDF = async (Texto) => {
             const doc = new jsPDF();
@@ -77,37 +79,203 @@
         window.GenerarPDFPET = async (petJson) => {
             const pet = JSON.parse(petJson);
             const doc = new jsPDF();
-            const tituloEstilo = {
-                fontSize: 16,
-                fontStyle: 'bold',
-                textAlign: 'center',
-                marginBottom: 10
+            const tituloR = "REPORTE GENERAL DE MASCOTA";
+
+            try {
+                // Cargar la imagen en base64 y agregar al PDF
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.src = "/images/membrete.png"; // Ruta de tu imagen
+
+                img.onload = function () {
+                    // Convertir la imagen a base64 y agregar al PDF
+                    doc.addImage(img, 'PNG', 20, 15, 167, 20);
+
+                    // Título principal
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(14);
+                    doc.text(tituloR, 70, 45, { align: "center" });
+
+                    // Información del reporte
+                    doc.setFontSize(12);
+                    doc.setFont("helvetica", "normal");
+
+                    // Ajustar posicionamiento para un formato más ordenado
+                    const yStart = 60;
+                    const lineSpacing = 6;
+
+                    doc.text(`Nombre: ${pet.Name}`, 20, yStart);
+                    doc.text(`Raza: ${pet.Raza}`, 20, yStart + lineSpacing);
+                    doc.text(`Edad: ${pet.Edad}`, 20, yStart + lineSpacing * 2);
+                    doc.text(`Precio: $${pet.Price}`, 20, yStart + lineSpacing * 3);
+                    doc.text(`Género: ${pet.GeneroDisplay}`, 20, yStart + lineSpacing * 4);
+
+                    doc.text("Dato mostrar1", 130, yStart);
+                    doc.text("Dato mostrar2", 130, yStart + lineSpacing);
+                    doc.text("Dato mostrar3", 130, yStart + lineSpacing * 2);
+                    doc.text("Dato mostrar4", 130, yStart + lineSpacing * 3);
+
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(14);
+                    doc.text("LISTA DE MASCOTAS FAVORITAS", 70, yStart + (lineSpacing * 6), { align: "center" });
+
+                    // Guardar el PDF
+                    doc.save("reporte_pet.pdf");
+                };
+
+                img.onerror = function () {
+                    console.error("Error al cargar la imagen");
+                };
+            } catch (error) {
+                console.error("Error generando el PDF:", error);
+            }
+        };
+    </script>
+    <script>
+        if (window.jsPDFInvoiceTemplate) {
+            const { default: jsPDFInvoiceTemplate } = window.jsPDFInvoiceTemplate;
+            window.GenerarPDFUSERaaa = function (userJson) {
+                const invoiceData = JSON.parse(userJson);
+                const props = {
+                    outputType: 'save',
+                    returnJsPDFDocObject: true,
+                    fileName: "Detalle de Usuario",
+                    orientationLandscape: false,
+                    compress: true,
+                    logo: {
+                        src: "/images/logo1.png",
+                        type: 'PNG',
+                        width: 26.66,
+                        height: 26.66,
+                        margin: { top: 0, left: 0 }
+                    },
+                    business: {
+                        name: "Zonosis GAMR",
+                        address: "Barrio la cruz, Calle 5",
+                        phone: "(+591) 123-456-789",
+                        email: "gamr@gmail.com",
+                        website: "www.gamr.com",
+                    },
+                    contact: {
+                        label: "Detalle de Usuario:",
+                        name: invoiceData.FirstName,
+                        address: "Barrio la chonta",
+                        phone: invoiceData.PhoneNumber,
+                        email: invoiceData.Email,
+                    },
+                    invoice: {
+                        label: "Informe #: ",
+                        num: 20,
+                        invDate: "Fecha Emision: 11/11/2024 12:12",
+                        invGenDate: "Fecha Registro: 02/02/2024 16:12",
+                        headerBorder: true,
+                        tableBodyBorder: true,
+                        header: [
+                            { title: "Nombre", style: { width: 30 } },
+                            { title: "Raza", style: { width: 50 } },
+                            { title: "Edad" },
+                            { title: "Genero" },
+                            { title: "Precio" }
+                        ],
+                        table: invoiceData.PetDetailRelDto.map(item => [
+                            item.Name,
+                            item.Raza,
+                            item.Edad,
+                            item.GeneroDisplay,
+                            item.Price
+                        ]),
+                        additionalRows: [{
+                            col1: 'Total:',
+                            col2: '6 favoritos',
+                            col3: 'Todo',
+                            style: { fontSize: 14 }
+                        }],
+                        invDescLabel: "Gracias por usar nuestro sistema",
+                    },
+                    footer: {
+                        text: "Este es un documento generado automáticamente.",
+                    },
+                    pageEnable: true,
+                    pageLabel: "Página ",
+                };
+
+                const pdfObject = jsPDFInvoiceTemplate(props);
+                console.log(pdfObject);
             };
-
-            const subtituloEstilo = {
-                fontSize: 14,
-                fontStyle: 'bold',
-                marginBottom: 5
-            };
-
-            const contenidoEstilo = {
-                fontSize: 12,
-                marginBottom: 5
-            };
-
-            // Contenido del recibo
-            const titulo = `Nombre es ${pet.Name}`;
-            const subtitulo = `Raza ${pet.Raza}`;
-            const contenido = `Edad: ${pet.Edad}\nPrecio: $${pet.Price}\nGenero: ${pet.GeneroDisplay}`;
-
-            doc.text(titulo, 85, 20, tituloEstilo);
-            doc.text(subtitulo, 20, 40, subtituloEstilo);
-            doc.text(contenido, 20, 60, contenidoEstilo);
-            //doc.text(Texto, 20, 100, contenidoEstilo);
-
-            doc.save("testpet.pdf");
-
+        } else {
+            console.error("jsPDFInvoiceTemplate no está disponible.");
         }
+    </script>
+
+    <script>
+        window.GenerarPDFUSER = async (userJson) => {
+            const pet = JSON.parse(userJson);
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const tituloR = "REPORTE GENERAL DE USUARIO";
+
+            try {
+                // Cargar la imagen en base64 y agregar al PDF
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.src = "/images/membrete.png"; // Ruta de tu imagen
+
+                img.onload = function () {
+                    // Convertir la imagen a base64 y agregar al PDF
+                    doc.addImage(img, 'PNG', 20, 15, 167, 20);
+
+                    // Título principal
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(14);
+                    doc.text(tituloR, 100, 45, { align: "center" });
+
+                    // Información del reporte
+                    doc.setFontSize(12);
+                    doc.setFont("helvetica", "normal");
+
+                    // Ajustar posicionamiento para un formato más ordenado
+                    const yStart = 60;
+                    const lineSpacing = 6;
+
+                    doc.text(`Nombre: ${pet.FirstName}`, 20, yStart);
+                    doc.text(`Celular: ${pet.PhoneNumber}`, 20, yStart + lineSpacing);
+                    doc.text(`Correo: ${pet.Email}`, 20, yStart + lineSpacing * 2);
+                    doc.text("Tipo: Usuario", 20, yStart + lineSpacing * 3);
+                    doc.text("Riberalta: 14/11/2024", 20, yStart + lineSpacing * 4);
+
+                    doc.text("Dato mostrar1", 140, yStart);
+                    doc.text("Dato mostrar2", 140, yStart + lineSpacing);
+                    doc.text("Dato mostrar3", 140, yStart + lineSpacing * 2);
+                    doc.text("Dato mostrar4", 140, yStart + lineSpacing * 3);
+                    doc.text("Dato mostrar5", 140, yStart + lineSpacing * 4);
+
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(14);
+                    doc.text("LISTA DE MASCOTAS FAVORITAS", 100, yStart + (lineSpacing * 6), { align: "center" });
+
+                    doc.autoTable({
+                        startY: yStart + (lineSpacing * 7),
+                        head: [['Nombre', 'Raza', 'Edad', 'Genero', 'Precio']],
+                        body: pet.PetDetailRelDto.map(pcd => [
+                            pcd.Name,
+                            pcd.Raza,
+                            pcd.Edad,
+                            pcd.GeneroDisplay,
+                            pcd.Price
+                        ]),
+                    });
+
+                    // Guardar el PDF
+                    doc.save("reporte_Usuario_pet.pdf");
+                };
+
+                img.onerror = function () {
+                    console.error("Error al cargar la imagen");
+                };
+            } catch (error) {
+                console.error("Error generando el PDF:", error);
+            }
+        };
     </script>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetAlert2.min.js"></script>

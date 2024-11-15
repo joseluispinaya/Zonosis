@@ -51,6 +51,47 @@ namespace Zonosis.Api.Controllers
             return Ok(pets);
         }
 
+        [HttpGet("favorinue/{userId}")]
+        public async Task<ActionResult> GetUserFavorinueAsync(string userId)
+        {
+            var user = await _userHelper.GetUserAsync(new Guid(userId));
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var pets = await _context.UserFavoritess
+                    .Where(uf => uf.UserId == userId)
+                    .Select(uf => uf.Pet)
+                    .ToListAsync();
+
+            var userDto = new UserDetailDTO
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                Email = user.Email,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                UserType = user.UserType,
+                PetDetailRelDto = pets.Select(p => new PetDetailRelDTO
+                {
+                    Id = p!.Id,
+                    Name = p.Name,
+                    Image = p.Image,
+                    Raza = p.Raza,
+                    Genero = p.Genero,
+                    Price = p.Price,
+                    DateNacido = p.DateNacido,
+                    Description = p.Description,
+                    Views = p.Views,
+                    AdoptionStatus = p.AdoptionStatus,
+                    IsActive = p.IsActive
+                }).ToList()
+            };
+            return Ok(userDto);
+
+        }
+
         [HttpGet("adoptions/{userId}")]
         public async Task<ActionResult> GetUserAdoptionsAsync(string userId)
         {
@@ -63,6 +104,46 @@ namespace Zonosis.Api.Controllers
                             .Select(uf => uf.Pet)
                             .ToListAsync();
             return Ok(pets);
+        }
+
+        [HttpGet("adopciones/{userId}")]
+        public async Task<ActionResult> GetUserAdopcionesAsync(string userId)
+        {
+            var user = await _userHelper.GetUserAsync(new Guid(userId));
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var pets = await _context.UserAdoptions
+                        .Where(uf => uf.UserId == userId)
+                        .Select(uf => uf.Pet)
+                        .ToListAsync();
+
+            var userDto = new UserDetailDTO
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                Email = user.Email,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                UserType = user.UserType,
+                PetDetailRelDto = pets.Select(p => new PetDetailRelDTO
+                {
+                    Id = p!.Id,
+                    Name = p.Name,
+                    Image = p.Image,
+                    Raza = p.Raza,
+                    Genero = p.Genero,
+                    Price = p.Price,
+                    DateNacido = p.DateNacido,
+                    Description = p.Description,
+                    Views = p.Views,
+                    AdoptionStatus = p.AdoptionStatus,
+                    IsActive = p.IsActive
+                }).ToList()
+            };
+            return Ok(userDto);
         }
 
 

@@ -37,5 +37,11 @@ namespace Zonosis.Web.Helpers
             var petJson = JsonSerializer.Serialize(pet);
             return js.InvokeVoidAsync("GenerarPDFPET", petJson);
         }
+
+        public static ValueTask ReporteUserDto(this IJSRuntime js, UserDetailDTO user)
+        {
+            var userJson = JsonSerializer.Serialize(user);
+            return js.InvokeVoidAsync("GenerarPDFUSER", userJson);
+        }
     }
 }

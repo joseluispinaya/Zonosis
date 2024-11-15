@@ -77,5 +77,10 @@ namespace Zonosis.Web.AuthenticationProviders
         {
             await _jSRuntime.ReportePetDt(pet);
         }
+
+        public async Task ReportUserDtAsync(UserDetailDTO user)
+        {
+            await _jSRuntime.ReporteUserDto(user);
+        }
     }
 }
